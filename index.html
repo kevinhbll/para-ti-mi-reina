@@ -170,22 +170,21 @@
             
             // Posición horizontal aleatoria
             const x = Math.random() * window.innerWidth;
-            corazon.style.left = ${x}px;
+            corazon.style.left = `${x}px`;
             corazon.style.top = "-20px";
             
             // Tamaño aleatorio
             const tamano = Math.random() * 15 + 10;
-            corazon.style.width = ${tamano}px;
-            corazon.style.height = ${tamano}px;
+            corazon.style.width = `${tamano}px`;
+            corazon.style.height = `${tamano}px`;
             
             // Duración de caída aleatoria
-            corazon.style.animationDuration = ${Math.random() * 10 + 5}s;
+            corazon.style.animationDuration = `${Math.random() * 10 + 5}s`;
             
             // Color aleatorio
             const opacidad = Math.random() * 0.5 + 0.3;
             const tono = Math.floor(Math.random() * 30);
-            corazon.style.backgroundColor = rgba(255, 77, ${148 - tono}, ${opacidad});
-            corazon.style.setProperty("--color-corazon", rgba(255, 77, ${148 - tono}, ${opacidad}));
+            corazon.style.backgroundColor = `rgba(255, 77, ${148 - tono}, ${opacidad})`;
             
             document.body.appendChild(corazon);
             
@@ -200,16 +199,16 @@
             const estrella = document.createElement("div");
             estrella.classList.add("estrella");
             
-            estrella.style.left = ${e.clientX}px;
-            estrella.style.top = ${e.clientY}px;
+            estrella.style.left = `${e.clientX}px`;
+            estrella.style.top = `${e.clientY}px`;
             
             // Tamaño aleatorio
             const tamano = Math.random() * 6 + 4;
-            estrella.style.width = ${tamano}px;
-            estrella.style.height = ${tamano}px;
+            estrella.style.width = `${tamano}px`;
+            estrella.style.height = `${tamano}px`;
             
             // Posición ligeramente aleatoria
-            estrella.style.transform = translate(${Math.random() * 10 - 5}px, ${Math.random() * 10 - 5}px);
+            estrella.style.transform = `translate(${Math.random() * 10 - 5}px, ${Math.random() * 10 - 5}px)`;
             
             document.body.appendChild(estrella);
             
@@ -239,8 +238,8 @@
             const newY = Math.random() * maxY;
             
             btnNo.style.position = "absolute";
-            btnNo.style.left = ${newX}px;
-            btnNo.style.top = ${newY}px;
+            btnNo.style.left = `${newX}px`;
+            btnNo.style.top = `${newY}px`;
         });
 
         // Generar corazones constantemente
