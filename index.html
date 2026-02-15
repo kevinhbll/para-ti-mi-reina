@@ -19,6 +19,7 @@
             position: relative;
         }
 
+        /* Estilos de los corazones */
         .corazon-caida {
             position: absolute;
             width: 20px;
@@ -27,6 +28,7 @@
             transform: rotate(45deg);
             animation: caer linear infinite;
             transition: transform 0.2s ease;
+            opacity: 0.8;
         }
 
         .corazon-caida::before,
@@ -39,17 +41,34 @@
             border-radius: 50%;
         }
 
-        .corazon-caida::before { top: -10px; left: 0; }
-        .corazon-caida::after { top: 0; left: -10px; }
-
-        @keyframes caer {
-            0% { transform: rotate(45deg) translateY(-20px); opacity: 0.8; }
-            100% { transform: rotate(45deg) translateY(100vh); opacity: 0; }
+        .corazon-caida::before {
+            top: -10px;
+            left: 0;
         }
 
+        .corazon-caida::after {
+            top: 0;
+            left: -10px;
+        }
+
+        @keyframes caer {
+            0% {
+                transform: rotate(45deg) translateY(-20px);
+                opacity: 0;
+            }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% {
+                transform: rotate(45deg) translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        /* Responsividad de corazones al mouse */
         .corazon-caida.desviar-izq { transform: rotate(35deg) scale(1.05); }
         .corazon-caida.desviar-der { transform: rotate(55deg) scale(1.05); }
 
+        /* Estilos de las estrellas */
         .estrella {
             position: absolute;
             width: 8px;
@@ -65,6 +84,7 @@
             100% { transform: scale(0); opacity: 0; }
         }
 
+        /* Contenedor de la pregunta */
         .contenedor-pregunta {
             position: absolute;
             top: 50%;
@@ -79,13 +99,6 @@
             font-size: 2rem;
             margin-bottom: 2rem;
             text-shadow: 0 0 10px #ff4d94;
-        }
-
-        .botones {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            align-items: center;
         }
 
         .btn {
@@ -123,94 +136,89 @@
             color: #fff;
             font-size: 1.8rem;
             text-align: center;
+            background-color: rgba(255, 157, 148, 0.2);
             padding: 2rem;
             border-radius: 15px;
-            background-color: rgba(255, 77, 148, 0.2);
-            box-shadow: 0 0 25px #ff4d94;
-            z-index: 10;
+            box-shadow: 0 0 20px #ff4d94;
             display: none;
         }
     </style>
 </head>
 <body>
-    <div class="contenedor-pregunta" id="contenedorPregunta">
+    <div class="contenedor-pregunta">
         <h2 class="pregunta">¿Me amas?</h2>
-        <div class="botones">
-            <button class="btn btn-si" id="btnSi">¡Sí, te amo!</button>
-            <button class="btn btn-no" id="btnNo">No...</button>
-        </div>
-    </div>
-
-    <div class="mensaje-final" id="mensajeFinal">
-        <p>mi reina hermosa te amo con todo mi corazón y espero que tengas un lindo día</p>
+        <button class="btn btn-si" id="btnSi">¡Sí, te amo!</button>
+        <button class="btn btn-no" id="btnNo">No...</button>
+        <div class="mensaje-final" id="mensajeFinal">mi reina hermosa te amo con todo mi corazón y espero que tengas un lindo día</div>
     </div>
 
     <script>
-        function crearCorazonCaida() {
+        // Función para crear corazones
+        function crearCorazones() {
             const corazon = document.createElement("div");
             corazon.classList.add("corazon-caida");
-            const x = Math.random() * window.innerWidth;
-            corazon.style.left = ${x}px;
-            corazon.style.top = "-20px";
+            // Posición horizontal aleatoria
+            corazon.style.left = ${Math.random() * 100}vw;
+            // Tamaño aleatorio
             const tamano = Math.random() * 15 + 10;
             corazon.style.width = ${tamano}px;
             corazon.style.height = ${tamano}px;
+            // Velocidad aleatoria
             corazon.style.animationDuration = ${Math.random() * 10 + 5}s;
-            const opacidad = Math.random() * 0.5 + 0.3;
-            const tono = Math.floor(Math.random() * 30);
-            corazon.style.backgroundColor = rgba(255, 77, ${148 - tono}, ${opacidad});
+            // Color aleatorio (variaciones de rosa)
+            const tono = Math.floor(Math.random() * 30) + 128;
+            corazon.style.backgroundColor = rgb(255, ${tono}, ${tono});
+            corazon.querySelector::before.style.backgroundColor = rgb(255, ${tono}, ${tono});
+            corazon.querySelector::after.style.backgroundColor = rgb(255, ${tono}, ${tono});
+            
             document.body.appendChild(corazon);
-            setTimeout(() => corazon.remove(), 15000);
+
+            // Eliminar corazón cuando termine la animación
+            setTimeout(() => {
+                corazon.remove();
+            }, parseFloat(corazon.style.animationDuration) * 1000);
         }
 
-        document.addEventListener("mousemove", (e) => {
-            const estrella = document.createElement("div");
-            estrella.classList.add("estrella");
-            estrella.style.left = ${e.clientX}px;
-            estrella.style.top = ${e.clientY}px;
-            const tamanoEstrella = Math.random() * 6 + 4;
-            estrella.style.width = ${tamanoEstrella}px;
-            estrella.style.height = ${tamanoEstrella}px;
-            estrella.style.transform = translate(${Math.random() * 10 - 5}px, ${Math.random() * 10 - 5}px);
-            document.body.appendChild(estrella);
-            setTimeout(() => estrella.remove(), 1000);
+        // Crear corazones constantemente
+        setInterval(crearCorazones, 300);
 
-            const mitadPantalla = window.innerWidth / 2;
-            const todosCorazones = document.querySelectorAll(".corazon-caida");
-            todosCorazones.forEach(corazon => {
-                const posicionCorazon = parseFloat(corazon.style.left);
-                if (e.clientX < mitadPantalla && posicionCorazon < mitadPantalla) {
+        // Responsividad al mouse
+        document.addEventListener("mousemove", (e) => {
+            const mitad = window.innerWidth / 2;
+            const corazones = document.querySelectorAll(".corazon-caida");
+            
+            corazones.forEach(corazon => {
+                const posX = parseFloat(corazon.style.left);
+                if (e.clientX < mitad && posX < mitad) {
                     corazon.classList.add("desviar-izq");
                     setTimeout(() => corazon.classList.remove("desviar-izq"), 300);
-                } else if (e.clientX > mitadPantalla && posicionCorazon > mitadPantalla) {
+                } else if (e.clientX > mitad && posX > mitad) {
                     corazon.classList.add("desviar-der");
                     setTimeout(() => corazon.classList.remove("desviar-der"), 300);
                 }
+
+                // Crear estrellas al mover el mouse
+                const estrella = document.createElement("div");
+                estrella.classList.add("estrella");
+                estrella.style.left = ${e.clientX}px;
+                estrella.style.top = ${e.clientY}px;
+                document.body.appendChild(estrella);
+                setTimeout(() => estrella.remove(), 1000);
             });
         });
 
-        const btnSi = document.getElementById("btnSi");
-        const btnNo = document.getElementById("btnNo");
-        const contenedorPregunta = document.getElementById("contenedorPregunta");
-        const mensajeFinal = document.getElementById("mensajeFinal");
-
-        // Correción: Aseguramos que el botón funcione
-        btnSi.onclick = function() {
-            contenedorPregunta.style.display = "none";
-            mensajeFinal.style.display = "block";
-        };
-
-        btnNo.addEventListener("mouseover", () => {
-            const maxX = window.innerWidth - 150;
-            const maxY = window.innerHeight - 80;
-            const newX = Math.random() * maxX;
-            const newY = Math.random() * maxY;
-            btnNo.style.position = "absolute";
-            btnNo.style.left = ${newX}px;
-            btnNo.style.top = ${newY}px;
+        // Manejo de botones
+        document.getElementById("btnSi").addEventListener("click", () => {
+            document.querySelector(".contenedor-pregunta").style.display = "none";
+            document.getElementById("mensajeFinal").style.display = "block";
         });
 
-        setInterval(crearCorazonCaida, 300);
+        document.getElementById("btnNo").addEventListener("mouseover", () => {
+            const btn = document.getElementById("btnNo");
+            btn.style.position = "absolute";
+            btn.style.left = ${Math.random() * 80}vw;
+            btn.style.top = ${Math.random() * 80}vh;
+        });
     </script>
 </body>
 </html>
